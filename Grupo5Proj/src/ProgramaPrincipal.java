@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -7,50 +8,83 @@ import javax.swing.JOptionPane;
 
 public class ProgramaPrincipal {
 
-	public static void main(String[] args) throws IOException  {
-		Partido unPartido= new Partido();
-		Equipo miEquipo=new Equipo();
-		miEquipo.nombre="Argentina";
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
 		
-		Equipo miEquipo2=new Equipo();
-		miEquipo2.nombre="Arabia";
+		ArrayList<Partido> listaPartidos = new ArrayList<Partido>();
 		
-		unPartido.equipo1=miEquipo;
-		unPartido.equipo2=miEquipo2;
+		ArrayList<Pronostico> listaPronostico2 = new ArrayList<Pronostico>();
+
 		
-		ArrayList<Partido> listaPartidos=new ArrayList<Partido>();
-		String resultfile="archivos//resultados.txt";
-		int i=0;
+		Partido unPartido;
 		Equipo unEquipo1;
 		Equipo unEquipo2;
 		
+		String resultado = "Archivos\\resultado.txt";
+		String pronostico = "Archivos\\pronostico.txt";
+		
+		Pronostico unPronostico;
+		
+		int puntaje = 0;
 		
 		
-		for (String linea : Files.readAllLines(Paths.get(resultfile))){
-			//System.out.println("resultado: "+linea);
+		for (String linea : Files.readAllLines(Paths.get(resultado))) {
 			String lineas[] = linea.split(" ");
-			//System.out.println(datos[i]);
-			//i++;
-
-			for(String string:lineas) {
-				System.out.println(string);
-			}
-			unPartido=new Partido();
-			unEquipo1=new Equipo();
-			unEquipo2=new Equipo();
-			unEquipo1.nombre=lineas[0];
-			unEquipo2.nombre=lineas[3];
-			unPartido.equipo1=unEquipo1;
-			unPartido.equipo2=unEquipo2;
-			unPartido.golesEquipo1=Integer.parseInt(lineas[1]);
-			unPartido.golesEquipo2=Integer.parseInt(lineas[2]);
+			
+			unPartido = new Partido();
+			unEquipo1 = new Equipo();
+			unEquipo2 = new Equipo();
+			
+			unEquipo1.setNombre(lineas[0]);
+			unEquipo2.setNombre(lineas[3]);
+			
+			unPartido.setEquipo1(unEquipo1);
+			unPartido.setEquipo2(unEquipo2);
+			unPartido.setGolesEquipo1(Integer.parseInt(lineas[1]));
+			unPartido.setGolesEquipo2(Integer.parseInt(lineas[2]));
+			
 			listaPartidos.add(unPartido);
-		}
-		
-		for(i=0;i<listaPartidos.size();i++) {
-			JOptionPane.showMessageDialog(null,listaPartidos.get(i).equipo1.nombre+" "+listaPartidos.get(i).golesEquipo1);
 			
 		}
+				
+		// Array[1] = Gana equipo 1
+		// Array[2] = Empate
+		// Array[3] = Gana equipo2
+
+		for (String linea : Files.readAllLines(Paths.get(pronostico))) {
+			String lineas[] = linea.split(" ");
+			
+			unPronostico = new Pronostico();
+			unEquipo1 = new Equipo();
+			unEquipo2 = new Equipo();
+			
+			unEquipo1.setNombre(lineas[0]);
+			unEquipo2.setNombre(lineas[4]);
+			unPronostico.setGanaEquipo1(Integer.parseInt(lineas[1]));
+			unPronostico.setEmpate(Integer.parseInt(lineas[2]));
+			unPronostico.setGanaEquipo2(Integer.parseInt(lineas[3]));
+			
+			listaPronostico2.add(unPronostico);
+		}
+		
+		for(int i = 0; i < listaPronostico2.size(); i++) {
+			if(listaPronostico2.get(i).getGanaEquipo1() == 1) {
+				if(listaPartidos.get(i).getGolesEquipo1() > listaPartidos.get(i).getGolesEquipo2()) {
+					puntaje++;
+				}
+			}else if(listaPronostico2.get(i).getGanaEquipo2() == 1) {
+				if(listaPartidos.get(i).getGolesEquipo1() < listaPartidos.get(i).getGolesEquipo2()) {
+					puntaje++;				
+				}
+			
+			}else if(listaPronostico2.get(i).getEmpate() == 1){
+				if(listaPartidos.get(i).getGolesEquipo1() == listaPartidos.get(i).getGolesEquipo2()) {
+					puntaje++;
+				}
+			}
+		}	
+		
+		JOptionPane.showMessageDialog(null, "El puntaje es " + puntaje);
 	}
 
 }
