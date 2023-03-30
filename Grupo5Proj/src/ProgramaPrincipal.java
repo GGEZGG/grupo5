@@ -20,8 +20,8 @@ public class ProgramaPrincipal {
 		Equipo unEquipo1;
 		Equipo unEquipo2;
 		
-		String resultado = "Archivos\\resultado.txt";
-		String pronostico = "Archivos\\pronostico.txt";
+		String resultado = "archivos\\resultados.txt";
+		String pronostico = "archivos\\pronosticos.txt";
 		
 		Pronostico unPronostico;
 		
@@ -38,11 +38,7 @@ public class ProgramaPrincipal {
 			unEquipo1.setNombre(lineas[0]);
 			unEquipo2.setNombre(lineas[3]);
 			
-			unPartido.setEquipo1(unEquipo1);
-			unPartido.setEquipo2(unEquipo2);
-			unPartido.setGolesEquipo1(Integer.parseInt(lineas[1]));
-			unPartido.setGolesEquipo2(Integer.parseInt(lineas[2]));
-			
+			unPartido.setPartido(unEquipo1,unEquipo1,Integer.parseInt(lineas[1]),Integer.parseInt(lineas[2]));
 			listaPartidos.add(unPartido);
 			
 		}
@@ -60,9 +56,9 @@ public class ProgramaPrincipal {
 			
 			unEquipo1.setNombre(lineas[0]);
 			unEquipo2.setNombre(lineas[4]);
-			unPronostico.setGanaEquipo1(Integer.parseInt(lineas[1]));
-			unPronostico.setEmpate(Integer.parseInt(lineas[2]));
-			unPronostico.setGanaEquipo2(Integer.parseInt(lineas[3]));
+			
+			unPronostico.setPronostico(unEquipo1,unEquipo2,Integer.parseInt(lineas[1]),Integer.parseInt(lineas[2]),Integer.parseInt(lineas[3]));
+
 			
 			listaPronostico2.add(unPronostico);
 		}
@@ -82,7 +78,7 @@ public class ProgramaPrincipal {
 					puntaje++;
 				}
 			}
-		}	
+		}
 		
 		JOptionPane.showMessageDialog(null, "El puntaje es " + puntaje);
 	}
