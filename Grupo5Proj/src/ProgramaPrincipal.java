@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
@@ -12,8 +13,7 @@ public class ProgramaPrincipal {
 		// TODO Auto-generated method stub
 		
 		ArrayList<Partido> listaPartidos = new ArrayList<Partido>();
-		
-		ArrayList<Pronostico> listaPronostico2 = new ArrayList<Pronostico>();
+		ArrayList<Pronostico> listaPronostico = new ArrayList<Pronostico>();
 
 		
 		Partido unPartido;
@@ -37,8 +37,12 @@ public class ProgramaPrincipal {
 			
 			unEquipo1.setNombre(lineas[0]);
 			unEquipo2.setNombre(lineas[3]);
+
+			unPartido.setEquipo1(unEquipo1);
+			unPartido.setEquipo2(unEquipo2);
+			unPartido.setGolesEquipo1(Integer.parseInt(lineas[1]));
+			unPartido.setGolesEquipo2(Integer.parseInt(lineas[2]));
 			
-			unPartido.setPartido(unEquipo1,unEquipo1,Integer.parseInt(lineas[1]),Integer.parseInt(lineas[2]));
 			listaPartidos.add(unPartido);
 			
 		}
@@ -56,29 +60,31 @@ public class ProgramaPrincipal {
 			
 			unEquipo1.setNombre(lineas[0]);
 			unEquipo2.setNombre(lineas[4]);
-			
-			unPronostico.setPronostico(unEquipo1,unEquipo2,Integer.parseInt(lineas[1]),Integer.parseInt(lineas[2]),Integer.parseInt(lineas[3]));
 
+			unPronostico.setGanaEquipo1(Integer.parseInt(lineas[1]));
+			unPronostico.setEmpate(Integer.parseInt(lineas[2]));
+			unPronostico.setGanaEquipo2(Integer.parseInt(lineas[3]));
 			
-			listaPronostico2.add(unPronostico);
+			listaPronostico.add(unPronostico);
 		}
 		
-		for(int i = 0; i < listaPronostico2.size(); i++) {
-			if(listaPronostico2.get(i).getGanaEquipo1() == 1) {
+		for(int i = 0; i < listaPronostico.size(); i++) {
+			if(listaPronostico.get(i).getGanaEquipo1() == 1) {
 				if(listaPartidos.get(i).getGolesEquipo1() > listaPartidos.get(i).getGolesEquipo2()) {
 					puntaje++;
 				}
-			}else if(listaPronostico2.get(i).getGanaEquipo2() == 1) {
+			}else if(listaPronostico.get(i).getGanaEquipo2() == 1) {
 				if(listaPartidos.get(i).getGolesEquipo1() < listaPartidos.get(i).getGolesEquipo2()) {
 					puntaje++;				
 				}
 			
-			}else if(listaPronostico2.get(i).getEmpate() == 1){
+			}else if(listaPronostico.get(i).getEmpate() == 1){
 				if(listaPartidos.get(i).getGolesEquipo1() == listaPartidos.get(i).getGolesEquipo2()) {
 					puntaje++;
 				}
 			}
 		}
+		
 		
 		JOptionPane.showMessageDialog(null, "El puntaje es " + puntaje);
 	}
